@@ -6,7 +6,7 @@
 /*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:02:12 by pmateo            #+#    #+#             */
-/*   Updated: 2024/11/05 02:20:02 by ladloff          ###   ########.fr       */
+/*   Updated: 2024/11/05 04:01:05 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	__minishell(t_data *d)
 		set_signals();
 		if (isatty(STDIN_FILENO))
 			input = readline(d->prompt);
+		else
+			input = get_next_line(STDIN_FILENO, 0);
 		if (input == NULL)
 		{
 			if (isatty(STDIN_FILENO))
