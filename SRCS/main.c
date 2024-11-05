@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: annabrag <annabrag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:02:12 by pmateo            #+#    #+#             */
-/*   Updated: 2024/11/04 19:58:15 by annabrag         ###   ########.fr       */
+/*   Updated: 2024/11/05 02:20:02 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ static void	__minishell(t_data *d)
 		if (isatty(STDIN_FILENO) == 0)
 			dup2(d->fd_stdin_backup, STDIN_FILENO);
 		set_signals();
-		input = readline(d->prompt);
+		if (isatty(STDIN_FILENO))
+			input = readline(d->prompt);
 		if (input == NULL)
 		{
-			ft_printf(STDERR_FILENO, "exit\n");
+			if (isatty(STDIN_FILENO))
+				ft_printf(STDERR_FILENO, "exit\n");
 			clean_exit(SUCCESS);
 		}
 		else if (input[0] != '\0')
@@ -62,7 +64,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_printf(STDOUT_FILENO, BOLD YELLOW "No arguments allowed\n" R);
 		clean_exit(FAILURE);
 	}
-	printf("\n%s%s%s", BANNER_PT1, acronym, BANNER_PT2);
+	if (isatty(STDIN_FILENO))
+		printf("\n%s%s%s", BANNER_PT1, acronym, BANNER_PT2);
 	create_env(d, envp);
 	__minishell(d);
 	(void)yama(REMOVE, (void *)&acronym, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: art3mis <art3mis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:27:26 by annabrag          #+#    #+#             */
-/*   Updated: 2024/09/09 21:01:34 by art3mis          ###   ########.fr       */
+/*   Updated: 2024/11/05 02:18:51 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ static int	__set_exit_status(t_global *g, char **args)
 void	my_exit(t_global *g, char **args)
 {
 	int	exit_status;
-	
+
 	exit_status = 0;
-	ft_putendl_fd("exit", STDERR_FILENO);
+	if (isatty(STDIN_FILENO))
+		ft_putendl_fd("exit", STDERR_FILENO);
 	exit_status = __set_exit_status(g, args);
 	if (exit_status != 1)
 		clean_exit_shell(g, exit_status);
