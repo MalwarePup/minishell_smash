@@ -25,10 +25,39 @@ LIBFT		=	$(LIBFT_PATH)libft.a
 CC			=	cc
 INC			=	./INCLUDES/
 
-CFLAGS		=	-Wall -Wextra -Werror -I
-LFLAGS		=	-L $(LIBFT_PATH) -lft -lreadline
+CFLAGS		=	-Wall -Wextra -Werror -I$(INC)
+LFLAGS		=	-L $(LIBFT_PATH) -lft
 DEPFLAGS	=	-MMD -MP
 MAKEFLAGS	+=	--no-print-directory
+
+# Check if pkg-config is available
+PKG_CONFIG	=	$(shell command -v pkg-config 2> /dev/null)
+
+# If pkg-config is not installed, use default paths
+ifeq ($(PKG_CONFIG),)
+	ifeq ($(shell uname -s),Darwin)
+		ifeq ($(shell uname -m),arm64)
+			CFLAGS		+= -I/opt/homebrew/opt/readline/include
+			LFLAGS		+= -L/opt/homebrew/opt/readline/lib -lreadline
+		else ifeq ($(shell uname -m),x86_64)
+			CFLAGS		+= -I/usr/local/opt/readline/include
+			LFLAGS		+= -L/usr/local/opt/readline/lib -lreadline
+		else
+			$(error Unsupported macOS processor architecture)
+		endif
+	else ifeq ($(shell uname -s),Linux)
+		CFLAGS	+= -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=600
+		LFLAGS	+= -lreadline
+	else
+		$(error Unsupported operating system)
+	endif
+else
+# pkg-config is installed, use its configuration
+	CFLAGS		+= $(shell pkg-config --cflags-only-other readline)
+	CFLAGS	+= $(shell pkg-config --cflags-only-I readline)
+	LFLAGS		+= $(shell pkg-config --libs-only-L readline)
+	LFLAGS		+= $(shell pkg-config --libs-only-l readline)
+endif
 
 #******************************************************************************#
 #	SOURCES
@@ -108,7 +137,7 @@ all: $(LIBFT) $(NAME)
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 				@mkdir -p $(dir $@)
 				@printf "$(BOLD)$(ITAL)$(GREEN)Compiled: $(RESET)$(ITAL)$<                                  \n"
-				@$(CC) $(DEPFLAGS) $(CFLAGS) $(INC) -c $< -o $@
+				@$(CC) $(DEPFLAGS) $(CFLAGS) -c $< -o $@
 -include $(DEPS_F)
 
 $(LIBFT):
@@ -118,7 +147,7 @@ $(NAME): $(OBJS_F) $(LIBFT)
 			@printf "\n\n================= MINISHELL =================\n\n"
 			@printf "$(BLINK)$(GREEN)\t\t   READY!$(RESET)\n\n"
 			@printf "$(BOLD)=============================================\n\n$(RESET)"
-			@$(CC) $(CFLAGS) $(INC) $(OBJS_F) $(LFLAGS) -o $(NAME)
+			@$(CC) $(CFLAGS) $(OBJS_F) $(LFLAGS) -o $(NAME)
 
 clean:
 		@rm -rf $(OBJS_DIR)
@@ -135,6 +164,6 @@ re:	fclean all
 
 norm:
 		@clear
-		@norminette $(INC) $(SRC_DIR) $(LIBFT) | grep -v Norme -B1 || true
+		@norminette $(INC) $(SRCS_DIR) $(LIBFT) | grep -v Norme -B1 || true
 
 .PHONY:		all clean fclean re norm
