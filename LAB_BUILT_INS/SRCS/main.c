@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmateo <pmateo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:13:47 by annabrag          #+#    #+#             */
-/*   Updated: 2024/11/01 05:07:53 by pmateo           ###   ########.fr       */
+/*   Updated: 2024/11/05 01:57:23 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	secure_malloc(void *to_secure)
 /*	Readline should not count escape sequences as visible characters.
 	This is achieved by encapsulating the non-visible parts (escape
 	sequences) of the prompt between special sequences :
-	
+
 	-	\001 (start of non-visible sequence)
 	-	\002 (end of non-visible sequence)
-	
+
 	This enables readline to manage the length of the prompt correctly.
 */
 static void	__part_one(t_prompt *pr)
@@ -55,7 +55,7 @@ static void	__part_one(t_prompt *pr)
 
 static void	__custom_cwd(t_prompt *pr)
 {
-	char	cwd[PATH_MAX];
+	char	cwd[MY_PATH_MAX];
 	char	*tmp;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
@@ -95,7 +95,7 @@ char	*generate_prompt(t_prompt *pr)
 
 // char	*generate_prompt(t_prompt *pr)
 // {
-// 	char	cwd[PATH_MAX];
+// 	char	cwd[MY_PATH_MAX];
 
 // 	pr->username = getenv("USER");
 // 	if (pr->username == NULL)

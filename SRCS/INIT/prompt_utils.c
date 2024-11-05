@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: annabrag <annabrag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 02:40:19 by art3mis           #+#    #+#             */
-/*   Updated: 2024/11/04 19:59:09 by annabrag         ###   ########.fr       */
+/*   Updated: 2024/11/05 01:57:23 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /*	Readline should not count escape sequences as visible characters.
 	This is achieved by encapsulating the non-visible parts (escape
 	sequences) of the prompt between special sequences :
-	
+
 	-	\001 (start of non-visible sequence)
 	-	\002 (end of non-visible sequence)
-	
+
 	This enables readline to manage the length of the prompt correctly.
 */
 void	part_one(t_prompt *pr)
@@ -55,7 +55,7 @@ void	custom_cwd(t_prompt *pr)
 
 char	*substract_path(t_prompt *pr)
 {
-	char	cwd[PATH_MAX];
+	char	cwd[MY_PATH_MAX];
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{

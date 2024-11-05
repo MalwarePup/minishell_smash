@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: art3mis <art3mis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ladloff <ladloff@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:12:03 by annabrag          #+#    #+#             */
-/*   Updated: 2024/10/07 21:10:37 by art3mis          ###   ########.fr       */
+/*   Updated: 2024/11/05 01:57:23 by ladloff          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_builtins.h"
 
-/*	PWD means Print Working Directory	
+/*	PWD means Print Working Directory
 	The $PWD environment variable is a dynamic variable
 	that stores the path to the current working directory.
 */
 int	my_pwd(void)
 {
-	char	cwd[PATH_MAX];
+	char	cwd[MY_PATH_MAX];
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
